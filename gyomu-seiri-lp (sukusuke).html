@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>運営を整える。| きなこ</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600&family=Shippori+Mincho:wght@400;500;600&family=DM+Serif+Display:ital@0;1&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1714;
+    --paper: #f5f0e8;
+    --warm: #e8dcc8;
+    --accent: #8b4513;
+    --accent-light: #c4763a;
+    --muted: #6b5d52;
+    --line: rgba(26,23,20,0.12);
+    --gold: #b8956a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Serif JP', serif;
+    background: var(--paper);
+    color: var(--ink);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  .cursor {
+    position: fixed; width: 8px; height: 8px;
+    background: var(--accent); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transition: transform 0.15s ease;
+    transform: translate(-50%, -50%);
+  }
+  .cursor-ring {
+    position: fixed; width: 32px; height: 32px;
+    border: 1px solid var(--accent); border-radius: 50%;
+    pointer-events: none; z-index: 9998;
+    transition: all 0.25s ease;
+    transform: translate(-50%, -50%); opacity: 0.5;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 1000; opacity: 0.4;
+  }
+
+  /* ====== HERO ====== */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative; overflow: hidden;
+  }
+
+  .hero-left {
+    background: var(--ink);
+    padding: 80px 60px;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+    position: relative; overflow: hidden;
+  }
+
+  .hero-left::after {
+    content: '';
+    position: absolute; right: -60px; top: 50%;
+    transform: translateY(-50%);
+    width: 120px; height: 120px;
+    background: var(--accent); border-radius: 50%;
+    filter: blur(60px); opacity: 0.4;
+  }
+
+  .logo {
+    font-family: 'Jost', sans-serif; font-weight: 300;
+    font-size: 13px; letter-spacing: 0.3em;
+    color: var(--gold); text-transform: uppercase;
+    opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-main-text {
+    flex: 1; display: flex; flex-direction: column;
+    justify-content: center; padding: 60px 0;
+  }
+
+  .hero-label {
+    font-family: 'Jost', sans-serif; font-weight: 300;
+    font-size: 11px; letter-spacing: 0.4em;
+    color: var(--gold); text-transform: uppercase;
+    margin-bottom: 32px;
+    opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Shippori Mincho', serif;
+    font-size: clamp(40px, 5vw, 64px);
+    font-weight: 500; line-height: 1.35;
+    color: #f5f0e8; letter-spacing: 0.05em;
+    opacity: 0; animation: fadeUp 0.9s 0.6s forwards;
+  }
+
+  .hero-title .accent {
+    color: var(--gold); font-style: italic;
+    font-family: 'DM Serif Display', serif;
+  }
+
+  .hero-subtitle {
+    margin-top: 24px;
+    font-family: 'Shippori Mincho', serif;
+    font-size: clamp(16px, 2vw, 22px);
+    font-weight: 400; line-height: 1.7;
+    color: rgba(245,240,232,0.65);
+    letter-spacing: 0.05em;
+    opacity: 0; animation: fadeUp 0.8s 0.75s forwards;
+  }
+
+  .hero-sub {
+    margin-top: 32px;
+    font-size: 14px; line-height: 2;
+    color: rgba(245,240,232,0.45);
+    font-weight: 300; max-width: 340px;
+    opacity: 0; animation: fadeUp 0.8s 0.85s forwards;
+  }
+
+  .hero-tags {
+    margin-top: 24px;
+    display: flex; flex-wrap: wrap; gap: 8px;
+    opacity: 0; animation: fadeUp 0.8s 0.95s forwards;
+  }
+
+  .hero-tag-pill {
+    border: 1px solid rgba(184,149,106,0.35);
+    color: rgba(184,149,106,0.75);
+    padding: 5px 14px;
+    font-family: 'Jost', sans-serif;
+    font-size: 10px; letter-spacing: 0.2em;
+  }
+
+  .hero-cta-wrap {
+    margin-top: 48px;
+    opacity: 0; animation: fadeUp 0.8s 1.05s forwards;
+  }
+
+  .hero-btn {
+    display: inline-flex; align-items: center; gap: 16px;
+    background: var(--accent); color: var(--paper);
+    text-decoration: none; padding: 18px 40px;
+    font-family: 'Shippori Mincho', serif;
+    font-size: 15px; letter-spacing: 0.15em; font-weight: 500;
+    position: relative; overflow: hidden; transition: all 0.35s ease;
+  }
+
+  .hero-btn::before {
+    content: ''; position: absolute; inset: 0;
+    background: var(--accent-light);
+    transform: translateX(-101%); transition: transform 0.35s ease;
+  }
+
+  .hero-btn:hover::before { transform: translateX(0); }
+  .hero-btn span, .hero-btn svg { position: relative; z-index: 1; }
+  .hero-btn svg { width: 16px; height: 16px; transition: transform 0.3s; }
+  .hero-btn:hover svg { transform: translateX(4px); }
+
+  .hero-bottom {
+    opacity: 0; animation: fadeUp 0.8s 1.1s forwards;
+  }
+
+  .hero-scroll {
+    display: flex; align-items: center; gap: 16px;
+    color: rgba(245,240,232,0.4);
+    font-family: 'Jost', sans-serif;
+    font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase;
+  }
+
+  .scroll-line {
+    width: 40px; height: 1px;
+    background: rgba(245,240,232,0.3);
+    position: relative; overflow: hidden;
+  }
+
+  .scroll-line::after {
+    content: ''; position: absolute; left: -100%; top: 0;
+    width: 100%; height: 100%; background: var(--gold);
+    animation: scrollLine 2s 1.5s infinite;
+  }
+
+  @keyframes scrollLine {
+    0% { left: -100%; } 50% { left: 0%; } 100% { left: 100%; }
+  }
+
+  .hero-right {
+    background: var(--warm); position: relative;
+    overflow: hidden; display: flex;
+    align-items: center; justify-content: center;
+  }
+
+  .hero-visual {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .ink-art {
+    position: relative; width: 320px; height: 420px;
+    opacity: 0; animation: fadeIn 1.5s 1s forwards;
+  }
+
+  .ink-circle-1 {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 280px; height: 280px;
+    border: 1.5px solid rgba(139,69,19,0.2); border-radius: 50%;
+    animation: rotate 20s linear infinite;
+  }
+
+  .ink-circle-2 {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px; height: 200px;
+    border: 1px solid rgba(139,69,19,0.15); border-radius: 50%;
+    animation: rotate 15s linear infinite reverse;
+  }
+
+  .ink-dot { position: absolute; background: var(--accent); border-radius: 50%; }
+  .ink-dot-1 { width: 6px; height: 6px; top: 30px; left: 50%; transform: translateX(-50%); }
+  .ink-dot-2 { width: 4px; height: 4px; bottom: 60px; right: 40px; }
+  .ink-dot-3 { width: 3px; height: 3px; top: 50%; left: 20px; transform: translateY(-50%); opacity: 0.5; }
+
+  .kanji-bg {
+    position: absolute;
+    font-family: 'Shippori Mincho', serif;
+    font-size: 180px; font-weight: 600;
+    color: rgba(139,69,19,0.06);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap; user-select: none; letter-spacing: -0.05em;
+  }
+
+  .hero-right-tag {
+    position: absolute; top: 60px; right: 50px;
+    background: var(--ink); color: var(--paper);
+    padding: 12px 20px;
+    font-size: 11px; letter-spacing: 0.2em;
+    font-family: 'Jost', sans-serif;
+  }
+
+  @keyframes rotate {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; } to { opacity: 1; }
+  }
+
+  /* ====== SECTION COMMON ====== */
+  .section-header {
+    display: flex; align-items: flex-start;
+    gap: 60px; margin-bottom: 80px;
+  }
+
+  .section-number {
+    font-family: 'DM Serif Display', serif;
+    font-size: 80px; color: rgba(26,23,20,0.08);
+    line-height: 1; flex-shrink: 0; margin-top: -10px;
+  }
+
+  .section-en {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px; letter-spacing: 0.4em;
+    color: var(--accent); text-transform: uppercase;
+    margin-bottom: 16px; display: block;
+  }
+
+  .section-title {
+    font-family: 'Shippori Mincho', serif;
+    font-size: clamp(28px, 3vw, 42px);
+    font-weight: 500; line-height: 1.5; letter-spacing: 0.05em;
+  }
+
+  /* ====== EMPATHY ====== */
+  .empathy {
+    padding: 120px 80px 60px;
+    background: var(--paper); position: relative;
+  }
+
+  .empathy-inner {
+    max-width: 780px; margin: 0 auto; text-align: center;
+  }
+
+  .empathy-headline {
+    font-family: 'Shippori Mincho', serif;
+    font-size: clamp(26px, 3.5vw, 46px);
+    font-weight: 500; line-height: 1.7; letter-spacing: 0.05em;
+    margin-bottom: 28px;
+  }
+
+  .empathy-sub {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 17px; color: var(--muted);
+    letter-spacing: 0.15em; font-weight: 400;
+  }
+
+  .empathy-divider {
+    width: 1px; height: 60px;
+    background: var(--line); margin: 56px auto 0;
+  }
+
+  /* ====== CHECKLIST ====== */
+  .checklist-section {
+    padding: 60px 80px 120px;
+    background: var(--paper);
+  }
+
+  .checklist {
+    max-width: 560px; margin: 0 auto 72px;
+    display: flex; flex-direction: column; gap: 2px;
+  }
+
+  .check-item {
+    display: flex; align-items: center; gap: 24px;
+    padding: 26px 36px;
+    background: var(--ink);
+    font-family: 'Shippori Mincho', serif;
+    font-size: 17px; color: rgba(245,240,232,0.88);
+    font-weight: 400; letter-spacing: 0.05em;
+    position: relative; overflow: hidden;
+    transition: padding-left 0.3s ease;
+  }
+
+  .check-item::before {
+    content: ''; position: absolute;
+    left: 0; top: 0; bottom: 0; width: 3px;
+    background: var(--accent);
+    transform: scaleY(0); transition: transform 0.3s ease;
+  }
+
+  .check-item:hover { padding-left: 48px; }
+  .check-item:hover::before { transform: scaleY(1); }
+
+  .check-box {
+    width: 18px; height: 18px; flex-shrink: 0;
+    border: 1.5px solid rgba(184,149,106,0.4);
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .check-box::after {
+    content: ''; width: 7px; height: 7px;
+    background: var(--gold); opacity: 0.25;
+  }
+
+  .problem-conclusion {
+    max-width: 560px; margin: 0 auto;
+    padding: 48px; border: 1px solid var(--line);
+    text-align: center;
+  }
+
+  .problem-conclusion p {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 18px; line-height: 2;
+    letter-spacing: 0.05em; color: var(--ink);
+  }
+
+  .problem-conclusion em {
+    color: var(--accent); font-style: normal; font-weight: 600;
+  }
+
+  /* ====== SERVICE DESC ====== */
+  .service-desc {
+    padding: 120px 80px;
+    background: var(--warm);
+    position: relative; overflow: hidden;
+  }
+
+  .service-desc::before {
+    content: '整'; position: absolute;
+    right: -40px; bottom: -60px;
+    font-family: 'Shippori Mincho', serif;
+    font-size: 320px; font-weight: 600;
+    color: rgba(139,69,19,0.04);
+    user-select: none; pointer-events: none;
+  }
+
+  .service-desc-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
+  }
+
+  .service-desc-lead {
+    font-family: 'Shippori Mincho', serif;
+    font-size: clamp(22px, 2.5vw, 34px);
+    font-weight: 500; line-height: 1.8; letter-spacing: 0.05em;
+  }
+
+  .service-desc-body {
+    font-size: 15px; line-height: 2.3;
+    color: var(--muted); font-weight: 300;
+  }
+
+  .service-desc-body .quote {
+    display: block;
+    font-family: 'Shippori Mincho', serif;
+    font-size: 20px; font-weight: 500;
+    color: var(--ink); margin: 24px 0 12px;
+    letter-spacing: 0.05em; border-left: 3px solid var(--accent);
+    padding-left: 20px;
+  }
+
+  /* ====== SERVICE MENU ====== */
+  .service-menu {
+    padding: 120px 80px;
+    background: var(--paper);
+  }
+
+  .service-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px; margin-top: 80px;
+  }
+
+  .service-card {
+    background: var(--ink); padding: 48px 32px;
+    position: relative; overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+
+  .service-card:hover { transform: translateY(-6px); }
+
+  .service-card::after {
+    content: ''; position: absolute;
+    bottom: 0; left: 0; width: 100%; height: 3px;
+    background: var(--accent);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+
+  .service-card:hover::after { transform: scaleX(1); }
+
+  .service-card-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 40px;
+    color: rgba(245,240,232,0.07);
+    position: absolute; top: 16px; right: 20px;
+  }
+
+  .service-card-icon { width: 36px; height: 36px; margin-bottom: 28px; }
+
+  .service-card-title {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 18px; font-weight: 500;
+    color: var(--paper); margin-bottom: 16px; letter-spacing: 0.05em;
+  }
+
+  .service-card-desc {
+    font-size: 13px; line-height: 2;
+    color: rgba(245,240,232,0.5); font-weight: 300;
+  }
+
+  /* ====== BEFORE/AFTER ====== */
+  .transform {
+    padding: 120px 80px;
+    background: var(--warm);
+    position: relative; overflow: hidden;
+  }
+
+  .ba-grid {
+    display: grid;
+    grid-template-columns: 1fr 60px 1fr;
+    gap: 0; margin-top: 80px;
+  }
+
+  .ba-col { display: flex; flex-direction: column; gap: 2px; }
+
+  .ba-header {
+    padding: 18px 32px;
+    font-family: 'Jost', sans-serif;
+    font-size: 11px; letter-spacing: 0.4em;
+    text-transform: uppercase; margin-bottom: 2px;
+  }
+
+  .ba-header-before { background: rgba(26,23,20,0.08); color: var(--muted); }
+  .ba-header-after { background: var(--accent); color: var(--paper); }
+
+  .ba-item {
+    padding: 32px;
+    font-family: 'Shippori Mincho', serif;
+    font-size: 16px; font-weight: 400;
+    letter-spacing: 0.05em; line-height: 1.6; flex: 1;
+  }
+
+  .ba-item-before {
+    background: rgba(26,23,20,0.05); color: var(--muted);
+    position: relative;
+  }
+
+  .ba-item-before::after {
+    content: '×'; position: absolute; top: 28px; right: 24px;
+    color: rgba(26,23,20,0.15); font-size: 18px; font-family: 'Jost', sans-serif;
+  }
+
+  .ba-item-after {
+    background: var(--ink); color: rgba(245,240,232,0.88);
+    position: relative;
+  }
+
+  .ba-item-after::after {
+    content: '✓'; position: absolute; top: 28px; right: 24px;
+    color: var(--gold); font-size: 16px; font-family: 'Jost', sans-serif;
+  }
+
+  .ba-arrow-col {
+    display: flex; flex-direction: column;
+    justify-content: space-around; align-items: center;
+    padding: 40px 0;
+  }
+
+  .ba-arrow {
+    color: var(--accent); font-size: 18px;
+    font-family: 'Jost', sans-serif;
+  }
+
+  /* ====== ABOUT ====== */
+  .about {
+    padding: 120px 80px;
+    background: var(--paper);
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
+  }
+
+  .about-visual { position: relative; height: 480px; }
+
+  .about-box-main {
+    position: absolute; top: 0; left: 0;
+    width: 75%; height: 75%;
+    background: var(--ink);
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+  }
+
+  .about-box-main-inner { text-align: center; color: var(--paper); }
+
+  .about-name-en {
+    font-family: 'DM Serif Display', serif; font-size: 11px;
+    letter-spacing: 0.35em; color: var(--gold);
+    margin-bottom: 20px; display: block;
+  }
+
+  .about-kanji-large {
+    font-family: 'Shippori Mincho', serif; font-size: 64px;
+    font-weight: 600; letter-spacing: 0.2em; line-height: 1.1;
+    color: rgba(245,240,232,0.9);
+  }
+
+  .about-box-accent {
+    position: absolute; bottom: 0; right: 0;
+    width: 55%; height: 55%; background: var(--accent);
+  }
+
+  .about-box-accent-inner {
+    position: absolute; inset: 0;
+    display: flex; align-items: flex-end; padding: 28px;
+  }
+
+  .about-role { display: flex; flex-direction: column; }
+
+  .role-title {
+    font-family: 'Jost', sans-serif; font-size: 10px;
+    letter-spacing: 0.3em; color: rgba(245,240,232,0.6);
+    margin-bottom: 8px; text-transform: uppercase;
+  }
+
+  .role-label {
+    font-family: 'Shippori Mincho', serif; font-size: 15px;
+    color: rgba(245,240,232,0.9); font-weight: 500;
+    line-height: 1.6; letter-spacing: 0.05em;
+  }
+
+  .about-box-line {
+    position: absolute; bottom: 60px; left: 60px;
+    width: 3px; height: 80px; background: var(--line);
+  }
+
+  .about-desc {
+    font-size: 15px; line-height: 2.4;
+    color: var(--muted); font-weight: 300;
+    margin-top: 40px; margin-bottom: 48px;
+  }
+
+  .about-desc em {
+    font-style: normal; color: var(--ink);
+    font-weight: 500; font-family: 'Shippori Mincho', serif;
+  }
+
+  .about-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+
+  .tag {
+    border: 1px solid var(--line); padding: 8px 18px;
+    font-size: 12px; letter-spacing: 0.15em;
+    color: var(--muted); font-family: 'Jost', sans-serif;
+    transition: all 0.2s;
+  }
+
+  .tag:hover {
+    background: var(--ink); color: var(--paper); border-color: var(--ink);
+  }
+
+  /* ====== CTA ====== */
+  .cta {
+    background: var(--ink); padding: 120px 80px;
+    text-align: center; position: relative; overflow: hidden;
+  }
+
+  .cta::before {
+    content: ''; position: absolute; top: -100px; left: 50%;
+    transform: translateX(-50%);
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(139,69,19,0.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-label {
+    font-family: 'Jost', sans-serif; font-size: 11px;
+    letter-spacing: 0.5em; color: var(--gold);
+    text-transform: uppercase; margin-bottom: 32px;
+  }
+
+  .cta-title {
+    font-family: 'Shippori Mincho', serif;
+    font-size: clamp(26px, 3.5vw, 44px);
+    font-weight: 500; color: var(--paper);
+    letter-spacing: 0.05em; line-height: 1.6; margin-bottom: 16px;
+  }
+
+  .cta-sub {
+    font-size: 15px; color: rgba(245,240,232,0.45);
+    letter-spacing: 0.1em; margin-bottom: 48px; font-weight: 300;
+  }
+
+  .cta-list {
+    list-style: none;
+    display: flex; justify-content: center; gap: 48px;
+    margin-bottom: 56px;
+  }
+
+  .cta-list li {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 15px; color: rgba(245,240,232,0.65);
+    letter-spacing: 0.05em;
+    display: flex; align-items: center; gap: 12px;
+  }
+
+  .cta-list li::before {
+    content: '·'; color: var(--gold);
+    font-size: 24px; line-height: 1;
+  }
+
+  .cta-btn {
+    display: inline-flex; align-items: center; gap: 20px;
+    background: var(--accent); color: var(--paper);
+    text-decoration: none; padding: 24px 56px;
+    font-family: 'Shippori Mincho', serif;
+    font-size: 17px; letter-spacing: 0.15em; font-weight: 500;
+    position: relative; overflow: hidden; transition: all 0.35s ease;
+  }
+
+  .cta-btn::before {
+    content: ''; position: absolute; inset: 0;
+    background: var(--accent-light);
+    transform: translateX(-101%); transition: transform 0.35s ease;
+  }
+
+  .cta-btn:hover::before { transform: translateX(0); }
+  .cta-btn span, .cta-btn svg { position: relative; z-index: 1; }
+  .cta-btn svg { width: 20px; height: 20px; transition: transform 0.3s; }
+  .cta-btn:hover svg { transform: translateX(4px); }
+
+  .cta-note {
+    margin-top: 24px; font-size: 12px;
+    color: rgba(245,240,232,0.25);
+    letter-spacing: 0.15em; font-family: 'Jost', sans-serif;
+  }
+
+  /* ====== FAQ ====== */
+  .faq { padding: 120px 80px; background: var(--warm); }
+
+  .faq-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 2px; margin-top: 80px;
+  }
+
+  .faq-item {
+    background: var(--paper); padding: 40px;
+    cursor: pointer; transition: background 0.2s;
+  }
+
+  .faq-item:hover { background: rgba(255,255,255,0.9); }
+
+  .faq-q {
+    display: flex; justify-content: space-between;
+    align-items: flex-start; gap: 24px;
+  }
+
+  .faq-q-mark {
+    font-family: 'DM Serif Display', serif; font-size: 24px;
+    color: var(--accent); flex-shrink: 0; line-height: 1.3;
+  }
+
+  .faq-q-text {
+    font-family: 'Shippori Mincho', serif; font-size: 16px;
+    font-weight: 500; line-height: 1.6; letter-spacing: 0.03em; flex: 1;
+  }
+
+  .faq-toggle {
+    width: 24px; height: 24px; flex-shrink: 0;
+    color: var(--muted); margin-top: 2px; transition: transform 0.3s;
+  }
+
+  .faq-item.open .faq-toggle { transform: rotate(45deg); }
+
+  .faq-a {
+    display: none; padding-top: 20px; padding-left: 40px;
+    font-size: 14px; line-height: 2;
+    color: var(--muted); font-weight: 300;
+  }
+
+  .faq-item.open .faq-a { display: block; }
+
+  /* ====== FOOTER ====== */
+  footer {
+    background: var(--ink); padding: 60px 80px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .footer-logo {
+    font-family: 'Shippori Mincho', serif; font-weight: 500;
+    font-size: 15px; letter-spacing: 0.2em;
+    color: rgba(245,240,232,0.4);
+  }
+
+  .footer-copy {
+    font-size: 11px; color: rgba(245,240,232,0.25);
+    letter-spacing: 0.1em; font-family: 'Jost', sans-serif;
+  }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { min-height: 260px; }
+    .ba-grid { grid-template-columns: 1fr; }
+    .ba-arrow-col { display: none; }
+    .service-grid { grid-template-columns: 1fr 1fr; }
+    .service-desc-inner { grid-template-columns: 1fr; }
+    .about { grid-template-columns: 1fr; }
+    .faq-grid { grid-template-columns: 1fr; }
+    .empathy, .checklist-section, .service-desc, .service-menu,
+    .transform, .about, .cta, .faq { padding: 80px 32px; }
+    footer { flex-direction: column; gap: 20px; text-align: center; }
+    .cta-list { flex-direction: column; align-items: center; gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ① ファーストビュー -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="logo">Kinako · 伴走支援</div>
+
+    <div class="hero-main-text">
+      <span class="hero-label">Business Organizing Support</span>
+      <h1 class="hero-title">
+        運営を<span class="accent">整える</span>。
+      </h1>
+      <p class="hero-subtitle">
+        属人化した事業を<br>
+        "手を離しても回る構造"へ。
+      </p>
+      <p class="hero-sub">
+        講座・コミュニティ・オンライン事業の<br>
+        運営構造を整理する伴走支援
+      </p>
+      <div class="hero-tags">
+        <span class="hero-tag-pill">業務整理</span>
+        <span class="hero-tag-pill">運営フロー設計</span>
+        <span class="hero-tag-pill">マニュアル設計</span>
+        <span class="hero-tag-pill">仕組み化</span>
+      </div>
+      <div class="hero-cta-wrap">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLScKd8RmpdRG4Og1NJ4IV4hDftjjoyB0mxe0lsdc9MSm23mnug/viewform?usp=header" target="_blank" class="hero-btn">
+          <span>無料相談を予約する</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-bottom">
+      <div class="hero-scroll">
+        <div class="scroll-line"></div>
+        Scroll to explore
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-visual">
+      <div class="kanji-bg">整</div>
+      <div class="ink-art">
+        <div class="ink-circle-1"></div>
+        <div class="ink-circle-2"></div>
+        <div class="ink-dot ink-dot-1"></div>
+        <div class="ink-dot ink-dot-2"></div>
+        <div class="ink-dot ink-dot-3"></div>
+      </div>
+    </div>
+    <div class="hero-right-tag">無料相談受付中</div>
+  </div>
+</section>
+
+<!-- ② 共感 -->
+<section class="empathy">
+  <div class="empathy-inner">
+    <h2 class="empathy-headline reveal">
+      事業は伸びているのに、<br>
+      運営が回らない。
+    </h2>
+    <p class="empathy-sub reveal">こんな状態になっていませんか？</p>
+    <div class="empathy-divider reveal"></div>
+  </div>
+</section>
+
+<!-- ③ 問題 -->
+<section class="checklist-section">
+  <div class="checklist">
+    <div class="check-item reveal">
+      <div class="check-box"></div>
+      自分しか分からない仕事が多い
+    </div>
+    <div class="check-item reveal">
+      <div class="check-box"></div>
+      スタッフに任せられない
+    </div>
+    <div class="check-item reveal">
+      <div class="check-box"></div>
+      業務が増え続けている
+    </div>
+    <div class="check-item reveal">
+      <div class="check-box"></div>
+      毎日対応に追われている
+    </div>
+    <div class="check-item reveal">
+      <div class="check-box"></div>
+      マニュアルがない
+    </div>
+  </div>
+
+  <div class="problem-conclusion reveal">
+    <p>
+      それは能力の問題ではなく<br>
+      <em>「運営構造」</em>の問題かもしれません。
+    </p>
+  </div>
+</section>
+
+<!-- ④ サービス説明 -->
+<section class="service-desc">
+  <div class="section-header reveal">
+    <div class="section-number">01</div>
+    <div class="section-title-wrap">
+      <span class="section-en">Service</span>
+      <h2 class="section-title">運営を整える<br>伴走者として</h2>
+    </div>
+  </div>
+
+  <div class="service-desc-inner">
+    <div class="service-desc-lead reveal">
+      運営を整える伴走者として、<br>
+      事業の運営構造を整理します。
+    </div>
+    <div class="service-desc-body reveal">
+      業務を見える化し、誰がやっても回る仕組みを作ることで
+      <span class="quote">「頑張らなくても回る運営」<br>を実現します。</span>
+      事業が成長するほど運営は複雑になります。<br>
+      だからこそ、構造から整えることが重要です。
+    </div>
+  </div>
+</section>
+
+<!-- ⑤ サービス内容 -->
+<section class="service-menu">
+  <div class="section-header reveal">
+    <div class="section-number">02</div>
+    <div class="section-title-wrap">
+      <span class="section-en">Menu</span>
+      <h2 class="section-title">サービス内容</h2>
+    </div>
+  </div>
+
+  <div class="service-grid">
+    <div class="service-card reveal">
+      <div class="service-card-num">01</div>
+      <svg class="service-card-icon" viewBox="0 0 36 36" fill="none">
+        <rect x="6" y="6" width="24" height="24" stroke="#b8956a" stroke-width="1.2"/>
+        <path d="M11 13h14M11 18h10M11 23h7" stroke="#b8956a" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+      <h3 class="service-card-title">業務整理</h3>
+      <p class="service-card-desc">現在の業務を洗い出し、全体構造を整理します。</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-card-num">02</div>
+      <svg class="service-card-icon" viewBox="0 0 36 36" fill="none">
+        <path d="M8 28V20l10-10 10 10v8" stroke="#b8956a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M14 28v-6h8v6" stroke="#b8956a" stroke-width="1.2"/>
+      </svg>
+      <h3 class="service-card-title">運営フロー設計</h3>
+      <p class="service-card-desc">誰が何をするのかを明確にし、無駄な作業を減らします。</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-card-num">03</div>
+      <svg class="service-card-icon" viewBox="0 0 36 36" fill="none">
+        <path d="M10 6h16v24H10z" stroke="#b8956a" stroke-width="1.2"/>
+        <path d="M14 13h8M14 18h8M14 23h5" stroke="#b8956a" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+      <h3 class="service-card-title">マニュアル設計</h3>
+      <p class="service-card-desc">属人化している業務を共有できる形にします。</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-card-num">04</div>
+      <svg class="service-card-icon" viewBox="0 0 36 36" fill="none">
+        <circle cx="18" cy="18" r="12" stroke="#b8956a" stroke-width="1.2"/>
+        <path d="M18 10v8l6 3" stroke="#b8956a" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+      <h3 class="service-card-title">仕組み化</h3>
+      <p class="service-card-desc">「自分がいないと回らない状態」から抜け出す構造を作ります。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ⑥ Before / After -->
+<section class="transform">
+  <div class="section-header reveal">
+    <div class="section-number">03</div>
+    <div class="section-title-wrap">
+      <span class="section-en">Before / After</span>
+      <h2 class="section-title">運営が整うと、<br>何が変わるか</h2>
+    </div>
+  </div>
+
+  <div class="ba-grid">
+    <div class="ba-col reveal">
+      <div class="ba-header ba-header-before">Before</div>
+      <div class="ba-item ba-item-before">毎日対応に追われる</div>
+      <div class="ba-item ba-item-before" style="margin-top:2px">自分しか分からない仕事が多い</div>
+      <div class="ba-item ba-item-before" style="margin-top:2px">スタッフに任せられない</div>
+    </div>
+
+    <div class="ba-arrow-col reveal">
+      <div class="ba-arrow">→</div>
+      <div class="ba-arrow">→</div>
+      <div class="ba-arrow">→</div>
+    </div>
+
+    <div class="ba-col reveal">
+      <div class="ba-header ba-header-after">After</div>
+      <div class="ba-item ba-item-after">役割が整理される</div>
+      <div class="ba-item ba-item-after" style="margin-top:2px">チームで運営できる</div>
+      <div class="ba-item ba-item-after" style="margin-top:2px">自分がいなくても回る</div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑦ きなこの紹介 -->
+<section class="about">
+  <div class="about-visual reveal">
+    <div class="about-box-main">
+      <div class="about-box-main-inner">
+        <span class="about-name-en">Consultant</span>
+        <p class="about-kanji-large">きなこ</p>
+      </div>
+    </div>
+    <div class="about-box-accent">
+      <div class="about-box-accent-inner">
+        <div class="about-role">
+          <span class="role-title">Role</span>
+          <span class="role-label">運営を整える<br>伴走者</span>
+        </div>
+      </div>
+    </div>
+    <div class="about-box-line"></div>
+  </div>
+
+  <div class="about-text">
+    <div class="section-header reveal" style="margin-bottom:0">
+      <div class="section-number">04</div>
+      <div class="section-title-wrap">
+        <span class="section-en">About</span>
+        <h2 class="section-title">きなこについて</h2>
+      </div>
+    </div>
+
+    <p class="about-desc reveal">
+      これまで複数の事業の運営に関わる中で、<br>
+      多くの現場で<br><br>
+      <em>「業務が属人化している」</em><br>
+      <em>「運営が整理されていない」</em><br><br>
+      という課題を見てきました。<br><br>
+      事業が成長するほど運営は複雑になります。<br>
+      だからこそ<br><br>
+      <em>「手を離しても回る構造」</em><br><br>
+      を作ることが重要だと考えています。
+    </p>
+
+    <div class="about-tags reveal">
+      <span class="tag">業務整理</span>
+      <span class="tag">運営フロー設計</span>
+      <span class="tag">マニュアル設計</span>
+      <span class="tag">仕組み化</span>
+      <span class="tag">伴走支援</span>
+    </div>
+  </div>
+</section>
+
+<!-- ⑧ 無料相談 CTA -->
+<section class="cta">
+  <p class="cta-label reveal">Free Consultation</p>
+  <h2 class="cta-title reveal">現在、無料相談を行っています。</h2>
+  <p class="cta-sub reveal">60分のZoom相談で、一緒に考えます。</p>
+
+  <ul class="cta-list reveal">
+    <li>運営構造の整理</li>
+    <li>課題の言語化</li>
+    <li>仕組み化の方向性</li>
+  </ul>
+
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLScKd8RmpdRG4Og1NJ4IV4hDftjjoyB0mxe0lsdc9MSm23mnug/viewform?usp=header" target="_blank" class="cta-btn reveal">
+    <span>無料相談を予約する</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
+
+  <p class="cta-note reveal">Googleフォームにて受付 · 売り込みは一切ありません</p>
+</section>
+
+<!-- ⑨ FAQ -->
+<section class="faq">
+  <div class="section-header reveal">
+    <div class="section-number">05</div>
+    <div class="section-title-wrap">
+      <span class="section-en">FAQ</span>
+      <h2 class="section-title">よくある質問</h2>
+    </div>
+  </div>
+
+  <div class="faq-grid">
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q">
+        <span class="faq-q-mark">Q</span>
+        <span class="faq-q-text">まだ事業が小さいのですが相談できますか？</span>
+        <svg class="faq-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+      </div>
+      <p class="faq-a">はい。むしろ早い段階で運営構造を整える方が、後々の負担が少なくなります。</p>
+    </div>
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q">
+        <span class="faq-q-mark">Q</span>
+        <span class="faq-q-text">相談したら契約しないといけませんか？</span>
+        <svg class="faq-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+      </div>
+      <p class="faq-a">いいえ。相談だけでも問題ありません。必要な場合のみご提案します。</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">きなこ · 伴走支援</div>
+  <div class="footer-copy">© 2025 Kinako. All rights reserved.</div>
+</footer>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    cursor.style.left = mouseX + 'px';
+    cursor.style.top = mouseY + 'px';
+  });
+
+  function animateRing() {
+    ringX += (mouseX - ringX) * 0.1;
+    ringY += (mouseY - ringY) * 0.1;
+    ring.style.left = ringX + 'px';
+    ring.style.top = ringY + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.querySelectorAll('a, button, .faq-item, .tag, .check-item').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.transform = 'translate(-50%, -50%) scale(2)';
+      ring.style.transform = 'translate(-50%, -50%) scale(1.5)';
+      ring.style.opacity = '0.3';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+      ring.style.transform = 'translate(-50%, -50%) scale(1)';
+      ring.style.opacity = '0.5';
+    });
+  });
+
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), 100);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  function toggleFaq(el) {
+    el.classList.toggle('open');
+  }
+</script>
+</body>
+</html>
